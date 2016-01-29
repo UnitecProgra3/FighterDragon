@@ -1,16 +1,12 @@
 #include "Move.h"
 
-Move::Move(SDL_Renderer* renderer)
+Move::Move(SDL_Renderer* renderer,vector<Sprite*>sprites)
 {
     this->renderer=renderer;
-    Sprite *sprite1=new Sprite(renderer,"assets/idle/1.png",75);
-    Sprite *sprite2=new Sprite(renderer,"assets/idle/2.png",75);
-    Sprite *sprite3=new Sprite(renderer,"assets/idle/3.png",75);
-    Sprite *sprite4=new Sprite(renderer,"assets/idle/4.png",75);
-    sprites.push_back(sprite1);
-    sprites.push_back(sprite2);
-    sprites.push_back(sprite3);
-    sprites.push_back(sprite4);
+    for(int i=0;i<sprites.size();i++)
+    {
+        this->sprites.push_back(sprites[i]);
+    }
     current_sprite=0;
     frame=0;
     current_sprite_frame=0;

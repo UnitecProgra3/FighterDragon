@@ -14,7 +14,7 @@ class Move
     public:
         vector<Sprite*> sprites;
         SDL_Renderer* renderer;
-        Move(SDL_Renderer* renderer);
+        Move(SDL_Renderer* renderer,vector<Sprite*>sprites);
         int current_sprite;
         int frame;
         int current_sprite_frame;

@@ -1,4 +1,3 @@
-
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 #include<iostream>
@@ -22,7 +21,7 @@ int main( int argc, char* args[] )
         return 10;
     }
     //Creates a SDL Window
-    if((window = SDL_CreateWindow("Image Loading", 100, 100, 500/*WIDTH*/, 250/*HEIGHT*/, SDL_WINDOW_RESIZABLE | SDL_RENDERER_PRESENTVSYNC)) == NULL)
+    if((window = SDL_CreateWindow("Image Loading", 100, 100, 1200/*WIDTH*/, 600/*HEIGHT*/, SDL_WINDOW_RESIZABLE | SDL_RENDERER_PRESENTVSYNC)) == NULL)
     {
         return 20;
     }
@@ -47,7 +46,12 @@ int main( int argc, char* args[] )
     rect_character.w = 32;
     rect_character.h = 32;
 
-    Move move(renderer);
+    vector<Sprite*>sprites;
+    sprites.push_back(new Sprite(renderer,"assets/idle/1.png",75));
+    sprites.push_back(new Sprite(renderer,"assets/idle/2.png",75));
+    sprites.push_back(new Sprite(renderer,"assets/idle/3.png",75));
+    sprites.push_back(new Sprite(renderer,"assets/idle/4.png",75));
+    Move move(renderer,sprites);
 
     //Main Loop
     while(true)
@@ -66,6 +70,10 @@ int main( int argc, char* args[] )
                     rect_character.x--;
             }
         }
+
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+
 
         SDL_RenderCopy(renderer, background, NULL, &rect_background);
         SDL_RenderCopy(renderer, character, NULL, &rect_character);
