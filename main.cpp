@@ -66,6 +66,7 @@ int main( int argc, char* args[] )
 
         SDL_RenderCopy(renderer, background, NULL, &rect_background);
 
+        character->logic();
         character->draw();
 
         SDL_RenderPresent(renderer);

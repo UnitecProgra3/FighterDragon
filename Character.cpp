@@ -27,7 +27,9 @@ Character::Character(SDL_Renderer* renderer)
     moves["punch"]=getMove(renderer,"punch",3);
     moves["walk"]=getMove(renderer,"walk",5);
 
-    this->current_move = "walk";
+    this->current_move = "idle";
+    this->current_sprite = 0;
+    this->current_sprite_frame = 0;
 }
 
 Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
@@ -36,7 +38,7 @@ Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
     for(int i=1;i<=sprite_amount;i++)
     {
         string path="assets/" + name + "/" + toString(i) + ".png";
-        sprites.push_back(new Sprite(renderer,path,75));
+        sprites.push_back(new Sprite(renderer,path,10));
     }
     return new Move(renderer,sprites);
 }
@@ -46,7 +48,45 @@ Character::~Character()
     //dtor
 }
 
+void Character::logic()
+{
+    const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+
+    if( currentKeyStates[ SDL_SCANCODE_Q ] )
+    {
+        this->current_move = "idle";
+        this->current_sprite = 0;
+    }
+    if( currentKeyStates[ SDL_SCANCODE_W ] )
+    {
+        this->current_move = "kick";
+        this->current_sprite = 0;
+    }
+    if( currentKeyStates[ SDL_SCANCODE_E ] )
+    {
+        this->current_move = "punch";
+        this->current_sprite = 0;
+    }
+    if( currentKeyStates[ SDL_SCANCODE_R ] )
+    {
+        this->current_move = "walk";
+        this->current_sprite = 0;
+    }
+
+    current_sprite_frame++;
+    if(current_sprite_frame>=moves[current_move]->sprites[current_sprite]->frames)
+    {
+        current_sprite++;
+        if(current_sprite>=moves[current_move]->sprites.size())
+        {
+            current_move= "idle";
+            current_sprite=0;
+        }
+        current_sprite_frame=0;
+    }
+}
+
 void Character::draw()
 {
-    moves[current_move]->draw();
+    moves[current_move]->draw(current_sprite);
 }
