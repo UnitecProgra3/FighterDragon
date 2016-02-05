@@ -10,8 +10,11 @@ class Character
 {
     public:
         map<string,Move*>moves;
-        Character();
+        string current_move;
+        Character(SDL_Renderer* renderer);
         virtual ~Character();
+        void draw();
+        Move* getMove(SDL_Renderer *renderer, string name, int sprite_amount);
     protected:
     private:
 };

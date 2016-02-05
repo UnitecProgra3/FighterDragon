@@ -1,14 +1,14 @@
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 #include<iostream>
-#include "Move.h"
+#include "Character.h"
 
 using namespace std;
 
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Event Event;
-SDL_Texture *background,*character;
+SDL_Texture *background;
 SDL_Rect rect_background,rect_character;
 
 
@@ -40,18 +40,7 @@ int main( int argc, char* args[] )
     rect_background.w = 500;
     rect_background.h = 250;
 
-    character = IMG_LoadTexture(renderer, "personaje.png");
-    rect_character.x = 0;
-    rect_character.y = 100;
-    rect_character.w = 32;
-    rect_character.h = 32;
-
-    vector<Sprite*>sprites;
-    sprites.push_back(new Sprite(renderer,"assets/idle/1.png",75));
-    sprites.push_back(new Sprite(renderer,"assets/idle/2.png",75));
-    sprites.push_back(new Sprite(renderer,"assets/idle/3.png",75));
-    sprites.push_back(new Sprite(renderer,"assets/idle/4.png",75));
-    Move move(renderer,sprites);
+    Character* character = new Character(renderer);
 
     //Main Loop
     while(true)
@@ -76,9 +65,8 @@ int main( int argc, char* args[] )
 
 
         SDL_RenderCopy(renderer, background, NULL, &rect_background);
-        SDL_RenderCopy(renderer, character, NULL, &rect_character);
 
-        move.draw();
+        character->draw();
 
         SDL_RenderPresent(renderer);
     }
