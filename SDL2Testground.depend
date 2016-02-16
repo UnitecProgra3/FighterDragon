@@ -562,28 +562,29 @@
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1454693291 source:/home/turupawn/Clases/Progra3DragonFighter/main.cpp
+1455294969 source:/home/turupawn/Clases/Progra3DragonFighter/main.cpp
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
 	"Character.h"
 
-1454694185 source:/home/turupawn/Clases/Progra3DragonFighter/Character.cpp
+1455298370 source:/home/turupawn/Clases/Progra3DragonFighter/Character.cpp
 	"Character.h"
 
-1454694387 /home/turupawn/Clases/Progra3DragonFighter/Character.h
+1455294780 /home/turupawn/Clases/Progra3DragonFighter/Character.h
 	<iostream>
 	<map>
+	<fstream>
 	"Move.h"
 
-1454694020 /home/turupawn/Clases/Progra3DragonFighter/Move.h
+1455298320 /home/turupawn/Clases/Progra3DragonFighter/Move.h
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
 	<vector>
 	"Sprite.h"
 
-1454087438 /home/turupawn/Clases/Progra3DragonFighter/Sprite.h
+1455294828 /home/turupawn/Clases/Progra3DragonFighter/Sprite.h
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -595,9 +596,9 @@
 
 1454085079 /home/turupawn/Clases/Progra3DragonFighter/Hitbox.h
 
-1454694358 source:/home/turupawn/Clases/Progra3DragonFighter/Move.cpp
+1455298329 source:/home/turupawn/Clases/Progra3DragonFighter/Move.cpp
 	"Move.h"
 
-1454087449 source:/home/turupawn/Clases/Progra3DragonFighter/Sprite.cpp
+1455294912 source:/home/turupawn/Clases/Progra3DragonFighter/Sprite.cpp
 	"Sprite.h"
 

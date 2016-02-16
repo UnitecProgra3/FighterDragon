@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <fstream>
 #include "Move.h"
 using namespace std;
 
@@ -13,7 +14,9 @@ class Character
         string current_move;
         int current_sprite;
         int current_sprite_frame;
-        Character(SDL_Renderer* renderer);
+        int x;
+        int y;
+        Character(SDL_Renderer* renderer, int x, int y);
         virtual ~Character();
         void logic();
         void draw();

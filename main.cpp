@@ -40,7 +40,7 @@ int main( int argc, char* args[] )
     rect_background.w = 500;
     rect_background.h = 250;
 
-    Character* character = new Character(renderer);
+    Character* character = new Character(renderer,200,200);
 
     //Main Loop
     while(true)

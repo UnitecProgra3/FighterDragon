@@ -14,11 +14,16 @@ class Move
     public:
         vector<Sprite*> sprites;
         SDL_Renderer* renderer;
-        Move(SDL_Renderer* renderer,vector<Sprite*>sprites);
         int frame;
         int current_sprite_frame;
+
+        string input;
+        vector<string>cancels;
+
+        Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels);
         virtual ~Move();
-        void draw(int current_sprite);
+        void draw(int current_sprite,int character_x, int character_y);
+        bool canCancel(string move_name);
     protected:
     private:
 };

@@ -17,9 +17,9 @@ class Sprite
         SDL_Texture *texture;
         SDL_Rect rect;
         SDL_Renderer* renderer;
-        Sprite(SDL_Renderer* renderer,string path,int frames);
+        Sprite(SDL_Renderer* renderer,string path,int frames,int align_x,int align_y);
         virtual ~Sprite();
-        void draw();
+        void draw(int character_x, int character_y);
     protected:
     private:
 };
