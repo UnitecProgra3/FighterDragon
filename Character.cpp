@@ -20,7 +20,7 @@ std::string toString(int number)
     return returnvalue;
 }
 
-Character::Character(SDL_Renderer* renderer, int x, int y)
+Character::Character(SDL_Renderer* renderer, int x, int y, InputManager *input_manager)
 {
     this->x=x;
     this->y=y;
@@ -28,11 +28,13 @@ Character::Character(SDL_Renderer* renderer, int x, int y)
     moves["idle"]=getMove(renderer,"idle",4);
     moves["kick"]=getMove(renderer,"kick",6);
     moves["punch"]=getMove(renderer,"punch",3);
-    moves["walk"]=getMove(renderer,"walk",5);
+    moves["walk_forward"]=getMove(renderer,"walk_forward",5);
+    moves["walk_backward"]=getMove(renderer,"walk_backward",5);
 
     this->current_move = "idle";
     this->current_sprite = 0;
     this->current_sprite_frame = 0;
+    this->input_manager=input_manager;
 }
 
 Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
@@ -62,7 +64,18 @@ Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
         cancels.push_back(cancel_temp);
     }
 
-    return new Move(renderer,sprites,cancels);
+    string buttons_file_path = "assets/" + name + "/buttons.txt";
+    ifstream buttons_file(buttons_file_path.c_str());
+    vector<Button*>buttons;
+    char button_temp;
+    cout<<name<<endl;
+    while(buttons_file>>button_temp)
+    {
+        buttons.push_back(new Button(button_temp));
+        cout<<button_temp<<endl;
+    }
+
+    return new Move(renderer,sprites,cancels,buttons);
 }
 
 Character::~Character()
@@ -79,7 +92,7 @@ void Character::logic()
         this->current_move = "idle";
         this->current_sprite = 0;
     }
-    else if( currentKeyStates[ SDL_SCANCODE_W ] )
+    else if( input_manager->isInBuffer(*moves["kick"]) )
     {
         if(moves["kick"]->canCancel(this->current_move))
         {
@@ -87,7 +100,7 @@ void Character::logic()
             this->current_sprite = 0;
         }
     }
-    else if( currentKeyStates[ SDL_SCANCODE_E ] )
+    else if( input_manager->isInBuffer(*moves["punch"]) )
     {
         if(moves["punch"]->canCancel(this->current_move))
         {
@@ -95,34 +108,30 @@ void Character::logic()
             this->current_sprite = 0;
         }
     }
-    else if( currentKeyStates[ SDL_SCANCODE_R ] )
+    else if( input_manager->isInBuffer(*moves["walk_forward"]) )
     {
-        if(moves["walk"]->canCancel(this->current_move))
+        if(moves["walk_forward"]->canCancel(this->current_move))
         {
-            if(this->current_move!="walk")
+            if(this->current_move!="walk_forward")
             {
                 this->current_sprite = 0;
             }
-            this->current_move = "walk";
-            this->x-=5;
+            this->current_move = "walk_forward";
         }
     }
-    else if( currentKeyStates[ SDL_SCANCODE_T ] )
+    else if( input_manager->isInBuffer(*moves["walk_backward"]) )
     {
-        if(this->current_move=="idle"
-           || this->current_move=="walk")
-       {
-            if(this->current_move!="walk")
+        if(moves["walk_backward"]->canCancel(this->current_move))
+        {
+            if(this->current_move!="walk_backward")
             {
                 this->current_sprite = 0;
             }
-            this->current_move = "walk";
-            this->x+=5;
-       }
-
+            this->current_move = "walk_backward";
+        }
     }else
     {
-        if(this->current_move=="walk")
+        if(this->current_move=="walk_forward" || this->current_move=="walk_backward")
         {
             this->current_move = "idle";
             this->current_sprite = 0;
@@ -139,6 +148,15 @@ void Character::logic()
             current_sprite=0;
         }
         current_sprite_frame=0;
+    }
+
+    if(current_move=="walk_forward")
+    {
+        this->x+=5;
+    }
+    if(current_move=="walk_backward")
+    {
+        this->x-=5;
     }
 }
 

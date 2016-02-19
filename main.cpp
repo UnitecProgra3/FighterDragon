@@ -1,7 +1,11 @@
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 #include<iostream>
+#include<list>
 #include "Character.h"
+#include "Button.h"
+#include "DeviceButton.h"
+#include "InputManager.h"
 
 using namespace std;
 
@@ -40,11 +44,19 @@ int main( int argc, char* args[] )
     rect_background.w = 500;
     rect_background.h = 250;
 
-    Character* character = new Character(renderer,200,200);
+    InputManager *input_manager=new InputManager();
 
+    Character* character = new Character(renderer,200,200,input_manager);
+
+    map<DeviceButton*,Button*>input_map;
+
+    int frame=0;
     //Main Loop
     while(true)
     {
+        input_manager->update();
+
+        frame++;
         while(SDL_PollEvent(&Event))
         {
             if(Event.type == SDL_QUIT)

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 #include "Sprite.h"
+#include "Button.h"
+
 using namespace std;
 
 class Move
@@ -17,10 +19,11 @@ class Move
         int frame;
         int current_sprite_frame;
 
-        string input;
         vector<string>cancels;
 
-        Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels);
+        vector<Button*>buttons;
+
+        Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels,vector<Button*>buttons);
         virtual ~Move();
         void draw(int current_sprite,int character_x, int character_y);
         bool canCancel(string move_name);

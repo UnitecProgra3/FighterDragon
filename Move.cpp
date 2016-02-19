@@ -1,6 +1,6 @@
 #include "Move.h"
 
-Move::Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels)
+Move::Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels,vector<Button*>buttons)
 {
     this->renderer=renderer;
     for(int i=0;i<sprites.size();i++)
@@ -10,6 +10,7 @@ Move::Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels)
     frame=0;
     current_sprite_frame=0;
     this->cancels = cancels;
+    this->buttons = buttons;
 }
 
 Move::~Move()
