@@ -25,7 +25,7 @@ class Move
 
         Move(SDL_Renderer* renderer,vector<Sprite*>sprites,vector<string>cancels,vector<Button*>buttons);
         virtual ~Move();
-        void draw(int current_sprite,int character_x, int character_y);
+        void draw(int current_sprite,int character_x, int character_y,bool flipped);
         bool canCancel(string move_name);
     protected:
     private:

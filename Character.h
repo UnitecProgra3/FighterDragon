@@ -18,11 +18,13 @@ class Character
         int current_sprite_frame;
         int x;
         int y;
-        Character(SDL_Renderer* renderer, int x, int y, InputManager *input_manager);
+        bool flipped;
+        Character(SDL_Renderer* renderer, int x, int y, bool flipped, string input_manager_file);
         virtual ~Character();
         void logic();
         void draw();
         Move* getMove(SDL_Renderer *renderer, string name, int sprite_amount);
+        vector<Hitbox*> getHitboxes();
     protected:
     private:
 };

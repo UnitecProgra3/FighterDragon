@@ -32,14 +32,22 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Button.cpp" />
+		<Unit filename="Button.h" />
 		<Unit filename="Character.cpp" />
 		<Unit filename="Character.h" />
+		<Unit filename="DeviceButton.cpp" />
+		<Unit filename="DeviceButton.h" />
 		<Unit filename="Hitbox.cpp" />
 		<Unit filename="Hitbox.h" />
+		<Unit filename="InputManager.cpp" />
+		<Unit filename="InputManager.h" />
 		<Unit filename="Move.cpp" />
 		<Unit filename="Move.h" />
 		<Unit filename="Sprite.cpp" />
 		<Unit filename="Sprite.h" />
+		<Unit filename="Utility.cpp" />
+		<Unit filename="Utility.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

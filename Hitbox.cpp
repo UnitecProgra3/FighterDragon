@@ -1,8 +1,11 @@
 #include "Hitbox.h"
 
-Hitbox::Hitbox()
+Hitbox::Hitbox(int x, int y, int w, int h)
 {
-    //ctor
+    this->rect.x=x;
+    this->rect.y=y;
+    this->rect.w=w;
+    this->rect.h=h;
 }
 
 Hitbox::~Hitbox()

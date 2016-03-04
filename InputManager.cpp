@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-InputManager::InputManager()
+InputManager::InputManager(string file_path)
 {
     possible_buttons.push_back('8');
     possible_buttons.push_back('2');
@@ -10,14 +10,14 @@ InputManager::InputManager()
     possible_buttons.push_back('b');
     possible_buttons.push_back('c');
 
-    input_map['8']=new DeviceButton(SDL_SCANCODE_W);
-    input_map['2']=new DeviceButton(SDL_SCANCODE_S);
-    input_map['4']=new DeviceButton(SDL_SCANCODE_A);
-    input_map['6']=new DeviceButton(SDL_SCANCODE_D);
-
-    input_map['a']=new DeviceButton(SDL_SCANCODE_U);
-    input_map['b']=new DeviceButton(SDL_SCANCODE_I);
-    input_map['c']=new DeviceButton(SDL_SCANCODE_O);
+    ifstream in(file_path.c_str());
+    char input;
+    string device;
+    while(in>>input)
+    {
+        in>>device;
+        input_map[input]=new DeviceButton(sdlKeboardMap(device));
+    }
 
     for(int i=0;i<20;i++)
     {
@@ -88,4 +88,39 @@ bool InputManager::isInBuffer(Move move)
         buffer_iterator--;
     }
     return true;
+}
+
+int InputManager::sdlKeboardMap(string scancode_name)
+{
+    map<string,int>sdl_key_constants;
+    sdl_key_constants["SDL_SCANCODE_Q"]=SDL_SCANCODE_Q;
+    sdl_key_constants["SDL_SCANCODE_W"]=SDL_SCANCODE_W;
+    sdl_key_constants["SDL_SCANCODE_E"]=SDL_SCANCODE_E;
+    sdl_key_constants["SDL_SCANCODE_R"]=SDL_SCANCODE_R;
+    sdl_key_constants["SDL_SCANCODE_T"]=SDL_SCANCODE_T;
+    sdl_key_constants["SDL_SCANCODE_Y"]=SDL_SCANCODE_Y;
+    sdl_key_constants["SDL_SCANCODE_U"]=SDL_SCANCODE_U;
+    sdl_key_constants["SDL_SCANCODE_I"]=SDL_SCANCODE_I;
+    sdl_key_constants["SDL_SCANCODE_O"]=SDL_SCANCODE_O;
+    sdl_key_constants["SDL_SCANCODE_P"]=SDL_SCANCODE_P;
+
+    sdl_key_constants["SDL_SCANCODE_A"]=SDL_SCANCODE_A;
+    sdl_key_constants["SDL_SCANCODE_S"]=SDL_SCANCODE_S;
+    sdl_key_constants["SDL_SCANCODE_D"]=SDL_SCANCODE_D;
+    sdl_key_constants["SDL_SCANCODE_F"]=SDL_SCANCODE_F;
+    sdl_key_constants["SDL_SCANCODE_G"]=SDL_SCANCODE_G;
+    sdl_key_constants["SDL_SCANCODE_H"]=SDL_SCANCODE_H;
+    sdl_key_constants["SDL_SCANCODE_J"]=SDL_SCANCODE_J;
+    sdl_key_constants["SDL_SCANCODE_K"]=SDL_SCANCODE_K;
+    sdl_key_constants["SDL_SCANCODE_L"]=SDL_SCANCODE_L;
+
+    sdl_key_constants["SDL_SCANCODE_Z"]=SDL_SCANCODE_Z;
+    sdl_key_constants["SDL_SCANCODE_X"]=SDL_SCANCODE_X;
+    sdl_key_constants["SDL_SCANCODE_C"]=SDL_SCANCODE_C;
+    sdl_key_constants["SDL_SCANCODE_V"]=SDL_SCANCODE_V;
+    sdl_key_constants["SDL_SCANCODE_B"]=SDL_SCANCODE_B;
+    sdl_key_constants["SDL_SCANCODE_N"]=SDL_SCANCODE_N;
+    sdl_key_constants["SDL_SCANCODE_M"]=SDL_SCANCODE_M;
+
+    return sdl_key_constants[scancode_name];
 }

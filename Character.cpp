@@ -20,10 +20,11 @@ std::string toString(int number)
     return returnvalue;
 }
 
-Character::Character(SDL_Renderer* renderer, int x, int y, InputManager *input_manager)
+Character::Character(SDL_Renderer* renderer, int x, int y, bool flipped, string input_manager_file)
 {
     this->x=x;
     this->y=y;
+    this->flipped=flipped;
 
     moves["idle"]=getMove(renderer,"idle",4);
     moves["kick"]=getMove(renderer,"kick",6);
@@ -34,7 +35,7 @@ Character::Character(SDL_Renderer* renderer, int x, int y, InputManager *input_m
     this->current_move = "idle";
     this->current_sprite = 0;
     this->current_sprite_frame = 0;
-    this->input_manager=input_manager;
+    this->input_manager=new InputManager(input_manager_file);
 }
 
 Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
@@ -51,7 +52,21 @@ Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
         align_file>>align_x;
         align_file>>align_y;
 
-        sprites.push_back(new Sprite(renderer,path,10,align_x,align_y));
+        vector<Hitbox*>hitboxes;
+
+        string hitbox_file_path = "assets/" + name + "/hitboxes/"+toString(i)+".txt";
+        ifstream hitbox_file(hitbox_file_path.c_str());
+
+        int x,y,w,h;
+        while(hitbox_file>>x)
+        {
+            hitbox_file>>y;
+            hitbox_file>>w;
+            hitbox_file>>h;
+            hitboxes.push_back(new Hitbox(x,y,w,h));
+        }
+
+        sprites.push_back(new Sprite(renderer,path,10,align_x,align_y,hitboxes));
     }
 
     //Cancel load
@@ -68,11 +83,9 @@ Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
     ifstream buttons_file(buttons_file_path.c_str());
     vector<Button*>buttons;
     char button_temp;
-    cout<<name<<endl;
     while(buttons_file>>button_temp)
     {
         buttons.push_back(new Button(button_temp));
-        cout<<button_temp<<endl;
     }
 
     return new Move(renderer,sprites,cancels,buttons);
@@ -85,14 +98,9 @@ Character::~Character()
 
 void Character::logic()
 {
-    const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+    input_manager->update();
 
-    if( currentKeyStates[ SDL_SCANCODE_Q ] )
-    {
-        this->current_move = "idle";
-        this->current_sprite = 0;
-    }
-    else if( input_manager->isInBuffer(*moves["kick"]) )
+    if( input_manager->isInBuffer(*moves["kick"]) )
     {
         if(moves["kick"]->canCancel(this->current_move))
         {
@@ -162,5 +170,10 @@ void Character::logic()
 
 void Character::draw()
 {
-    moves[current_move]->draw(current_sprite,x,y);
+    moves[current_move]->draw(current_sprite,x,y,flipped);
+}
+
+vector<Hitbox*> Character::getHitboxes()
+{
+    return moves[current_move]->sprites[current_sprite]->hitboxes;
 }

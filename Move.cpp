@@ -18,10 +18,10 @@ Move::~Move()
     //dtor
 }
 
-void Move::draw(int current_sprite,int character_x, int character_y)
+void Move::draw(int current_sprite,int character_x, int character_y,bool flipped)
 {
     Sprite* sprite = sprites[current_sprite];
-    sprite->draw(character_x,character_y);
+    sprite->draw(character_x,character_y,flipped);
     frame++;
 }
 
