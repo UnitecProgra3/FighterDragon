@@ -562,7 +562,7 @@
 	<SDL2/SDL_image.h>
 	<iostream>
 
-1457111252 source:/home/turupawn/Clases/Progra3DragonFighter/main.cpp
+1457716584 source:/home/turupawn/Clases/Progra3DragonFighter/main.cpp
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -572,10 +572,10 @@
 	"DeviceButton.h"
 	"InputManager.h"
 
-1457109312 source:/home/turupawn/Clases/Progra3DragonFighter/Character.cpp
+1457716544 source:/home/turupawn/Clases/Progra3DragonFighter/Character.cpp
 	"Character.h"
 
-1457109326 /home/turupawn/Clases/Progra3DragonFighter/Character.h
+1457716554 /home/turupawn/Clases/Progra3DragonFighter/Character.h
 	<iostream>
 	<map>
 	<fstream>
@@ -590,7 +590,7 @@
 	"Sprite.h"
 	"Button.h"
 
-1457111974 /home/turupawn/Clases/Progra3DragonFighter/Sprite.h
+1457711408 /home/turupawn/Clases/Progra3DragonFighter/Sprite.h
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<iostream>
@@ -607,7 +607,7 @@
 1456506107 source:/home/turupawn/Clases/Progra3DragonFighter/Move.cpp
 	"Move.h"
 
-1457111162 source:/home/turupawn/Clases/Progra3DragonFighter/Sprite.cpp
+1457711583 source:/home/turupawn/Clases/Progra3DragonFighter/Sprite.cpp
 	"Sprite.h"
 
 1455897771 source:/home/turupawn/Clases/Progra3DragonFighter/Button.cpp
@@ -620,10 +620,10 @@
 
 1455897891 /home/turupawn/Clases/Progra3DragonFighter/DeviceButton.h
 
-1456506963 source:/home/turupawn/Clases/Progra3DragonFighter/InputManager.cpp
+1457716883 source:/home/turupawn/Clases/Progra3DragonFighter/InputManager.cpp
 	"InputManager.h"
 
-1456506873 /home/turupawn/Clases/Progra3DragonFighter/InputManager.h
+1457716525 /home/turupawn/Clases/Progra3DragonFighter/InputManager.h
 	<SDL2/SDL.h>
 	"Move.h"
 	"Button.h"
@@ -636,6 +636,6 @@
 	<SDL2/SDL.h>
 	"Hitbox.h"
 
-1457111544 source:/home/turupawn/Clases/Progra3DragonFighter/Utility.cpp
+1457112059 source:/home/turupawn/Clases/Progra3DragonFighter/Utility.cpp
 	"Utility.h"
 

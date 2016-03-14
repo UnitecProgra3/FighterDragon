@@ -20,7 +20,7 @@ std::string toString(int number)
     return returnvalue;
 }
 
-Character::Character(SDL_Renderer* renderer, int x, int y, bool flipped, string input_manager_file)
+Character::Character(SDL_Renderer* renderer, int x, int y, bool flipped, string input_manager_file, string joystick_file_path)
 {
     this->x=x;
     this->y=y;
@@ -31,11 +31,12 @@ Character::Character(SDL_Renderer* renderer, int x, int y, bool flipped, string 
     moves["punch"]=getMove(renderer,"punch",3);
     moves["walk_forward"]=getMove(renderer,"walk_forward",5);
     moves["walk_backward"]=getMove(renderer,"walk_backward",5);
+    moves["on_hit"]=getMove(renderer,"on_hit",5);
 
     this->current_move = "idle";
     this->current_sprite = 0;
     this->current_sprite_frame = 0;
-    this->input_manager=new InputManager(input_manager_file);
+    this->input_manager=new InputManager(input_manager_file,joystick_file_path);
 }
 
 Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
@@ -52,11 +53,10 @@ Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
         align_file>>align_x;
         align_file>>align_y;
 
+        //Hitboxes
         vector<Hitbox*>hitboxes;
-
         string hitbox_file_path = "assets/" + name + "/hitboxes/"+toString(i)+".txt";
         ifstream hitbox_file(hitbox_file_path.c_str());
-
         int x,y,w,h;
         while(hitbox_file>>x)
         {
@@ -66,7 +66,21 @@ Move* Character::getMove(SDL_Renderer *renderer, string name, int sprite_amount)
             hitboxes.push_back(new Hitbox(x,y,w,h));
         }
 
-        sprites.push_back(new Sprite(renderer,path,10,align_x,align_y,hitboxes));
+        //Hurtboxes
+        vector<Hitbox*>hurtboxes;
+        string hurtboxes_file_path = "assets/" + name + "/hurtboxes/"+toString(i)+".txt";
+        ifstream hurtboxes_file(hurtboxes_file_path.c_str());
+        while(hurtboxes_file>>x)
+        {
+            hurtboxes_file>>y;
+            hurtboxes_file>>w;
+            hurtboxes_file>>h;
+            hurtboxes.push_back(new Hitbox(x,y,w,h));
+
+            cout<<"Hurtbox!"<<endl;
+        }
+
+        sprites.push_back(new Sprite(renderer,path,10,align_x,align_y,hitboxes,hurtboxes));
     }
 
     //Cancel load
@@ -100,20 +114,31 @@ void Character::logic()
 {
     input_manager->update();
 
+    if(this->current_move=="on_hit")
+    {
+        if(flipped)
+            this->x+=5;
+        else
+            this->x-=5;
+    }
+
+    if(input_manager->isJoyDown(/*Boton*/0,/*Joystick*/0))
+    {
+        cout<<"Boton presionado"<<endl;
+    }
+
     if( input_manager->isInBuffer(*moves["kick"]) )
     {
         if(moves["kick"]->canCancel(this->current_move))
         {
-            this->current_move = "kick";
-            this->current_sprite = 0;
+            cancel("kick");
         }
     }
     else if( input_manager->isInBuffer(*moves["punch"]) )
     {
         if(moves["punch"]->canCancel(this->current_move))
         {
-            this->current_move = "punch";
-            this->current_sprite = 0;
+            cancel("punch");
         }
     }
     else if( input_manager->isInBuffer(*moves["walk_forward"]) )
@@ -141,8 +166,7 @@ void Character::logic()
     {
         if(this->current_move=="walk_forward" || this->current_move=="walk_backward")
         {
-            this->current_move = "idle";
-            this->current_sprite = 0;
+            cancel("idle");
         }
     }
 
@@ -176,4 +200,15 @@ void Character::draw()
 vector<Hitbox*> Character::getHitboxes()
 {
     return moves[current_move]->sprites[current_sprite]->hitboxes;
+}
+
+vector<Hitbox*> Character::getHurtboxes()
+{
+    return moves[current_move]->sprites[current_sprite]->hurtboxes;
+}
+
+void Character::cancel(string new_move)
+{
+    this->current_move = new_move;
+    this->current_sprite = 0;
 }

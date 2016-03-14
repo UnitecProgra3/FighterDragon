@@ -19,12 +19,14 @@ class Character
         int x;
         int y;
         bool flipped;
-        Character(SDL_Renderer* renderer, int x, int y, bool flipped, string input_manager_file);
+        Character(SDL_Renderer* renderer, int x, int y, bool flipped, string input_manager_file, string joystick_file_path);
         virtual ~Character();
         void logic();
         void draw();
         Move* getMove(SDL_Renderer *renderer, string name, int sprite_amount);
         vector<Hitbox*> getHitboxes();
+        vector<Hitbox*> getHurtboxes();
+        void cancel(string new_move);
     protected:
     private:
 };

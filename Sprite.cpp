@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Renderer* renderer, string path, int frames,int align_x,int align_y,vector<Hitbox*>hitboxes)
+Sprite::Sprite(SDL_Renderer* renderer, string path, int frames,int align_x,int align_y,vector<Hitbox*>hitboxes,vector<Hitbox*>hurtboxes)
 {
     this->renderer = renderer;
     texture = IMG_LoadTexture(renderer,path.c_str());
@@ -12,6 +12,7 @@ Sprite::Sprite(SDL_Renderer* renderer, string path, int frames,int align_x,int a
     rect.y=align_y;
     this->frames = frames;
     this->hitboxes=hitboxes;
+    this->hurtboxes=hurtboxes;
 }
 
 Sprite::~Sprite()
@@ -61,6 +62,27 @@ void Sprite::draw(int character_x, int character_y, bool flipped)
                     hitboxes[i]->rect.w,
                     hitboxes[i]->rect.h,
                      255,0,0,0);
+        }
+    }
+
+    for(int i=0;i<hurtboxes.size();i++)
+    {
+        if(flipped)
+        {
+            drawRect(renderer,
+                     -hurtboxes[i]->rect.x-hurtboxes[i]->rect.w+character_x,
+                    -hurtboxes[i]->rect.y+character_y,
+                    hurtboxes[i]->rect.w,
+                    hurtboxes[i]->rect.h,
+                     0,0,255,0);
+        }else
+        {
+            drawRect(renderer,
+                     hurtboxes[i]->rect.x+character_x,
+                    -hurtboxes[i]->rect.y+character_y,
+                    hurtboxes[i]->rect.w,
+                    hurtboxes[i]->rect.h,
+                     0,0,255,0);
         }
     }
 }

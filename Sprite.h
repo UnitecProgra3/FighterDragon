@@ -15,10 +15,11 @@ class Sprite
     public:
         int frames;
         vector<Hitbox*>hitboxes;
+        vector<Hitbox*>hurtboxes;
         SDL_Texture *texture;
         SDL_Rect rect;
         SDL_Renderer* renderer;
-        Sprite(SDL_Renderer* renderer,string path,int frames,int align_x,int align_y,vector<Hitbox*>hitboxes);
+        Sprite(SDL_Renderer* renderer,string path,int frames,int align_x,int align_y,vector<Hitbox*>hitboxes,vector<Hitbox*>hurtboxes);
         virtual ~Sprite();
         void draw(int character_x, int character_y,bool flipped);
     protected:

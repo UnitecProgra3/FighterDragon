@@ -19,7 +19,7 @@ SDL_Rect rect_background,rect_character;
 int main( int argc, char* args[] )
 {
     //Init SDL
-    if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    if(SDL_Init(SDL_INIT_EVERYTHING | SDL_INIT_JOYSTICK) < 0)
     {
         return 10;
     }
@@ -43,8 +43,8 @@ int main( int argc, char* args[] )
     rect_background.w = 500;
     rect_background.h = 250;
 
-    Character* character = new Character(renderer,200,550,false,"assets/inputs_player1.txt");
-    Character* character2 = new Character(renderer,600,550,true,"assets/inputs_player2.txt");
+    Character* character = new Character(renderer,200,550,false,"assets/inputs_player1.txt","assets/joystick_player1.txt");
+    Character* character2 = new Character(renderer,800,550,true,"assets/inputs_player2.txt","assets/joystick_player2.txt");
 
     map<DeviceButton*,Button*>input_map;
 
@@ -52,24 +52,26 @@ int main( int argc, char* args[] )
 
     double last_fame_ticks=SDL_GetTicks();
 
+    SDL_JoystickOpen( 0 );
+
     //Main Loop
     while(true)
     {
         frame++;
-        while(SDL_PollEvent(&Event))
-        {
-            if(Event.type == SDL_QUIT)
-            {
-                return 0;
-            }
-            if(Event.type == SDL_KEYDOWN)
-            {
-                if(Event.key.keysym.sym == SDLK_d)
-                    rect_character.x++;
-                if(Event.key.keysym.sym == SDLK_a)
-                    rect_character.x--;
-            }
-        }
+//        while(SDL_PollEvent(&Event))
+//        {
+//            if(Event.type == SDL_QUIT)
+//            {
+//                return 0;
+//            }
+//            if(Event.type == SDL_KEYDOWN)
+//            {
+//                if(Event.key.keysym.sym == SDLK_d)
+//                    rect_character.x++;
+//                if(Event.key.keysym.sym == SDLK_a)
+//                    rect_character.x--;
+//            }
+//        }
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
@@ -86,11 +88,49 @@ int main( int argc, char* args[] )
         vector<Hitbox*>char1_hitboxes=character->getHitboxes();
         vector<Hitbox*>char2_hitboxes=character2->getHitboxes();
 
+        vector<Hitbox*>char1_hurtboxes=character->getHurtboxes();
+        vector<Hitbox*>char2_hurtboxes=character2->getHurtboxes();
+
         for(int i=0;i<char1_hitboxes.size();i++)
+        {
+            for(int j=0;j<char2_hurtboxes.size();j++)
+            {
+                SDL_Rect rect1 = char1_hitboxes[i]->rect;
+                SDL_Rect rect2 = char2_hurtboxes[j]->rect;
+
+                if(!character->flipped)
+                {
+                    rect1.x+=character->x;
+                }else
+                {
+                    rect1.x=-rect1.x-rect1.w+character->x;
+                }
+                rect1.y=-rect1.y+character->y;
+
+                if(!character2->flipped)
+                {
+                    rect2.x+=character2->x;
+                }else
+                {
+                    rect2.x=-rect2.x-rect2.w+character2->x;
+                }
+                rect2.y=-rect2.y+character2->y;
+                if(collides(rect1,rect2))
+                {
+                    cout<<"Jugador 1 conecto un golpe"<<endl;
+                    character2->cancel("on_hit");
+                }else
+                {
+                    //cout<<"No Colision!"<<endl;
+                }
+            }
+        }
+
+        for(int i=0;i<char1_hurtboxes.size();i++)
         {
             for(int j=0;j<char2_hitboxes.size();j++)
             {
-                SDL_Rect rect1 = char1_hitboxes[i]->rect;
+                SDL_Rect rect1 = char1_hurtboxes[i]->rect;
                 SDL_Rect rect2 = char2_hitboxes[j]->rect;
 
                 if(!character->flipped)
@@ -112,7 +152,8 @@ int main( int argc, char* args[] )
                 rect2.y=-rect2.y+character2->y;
                 if(collides(rect1,rect2))
                 {
-                    cout<<"Colision!"<<endl;
+                    cout<<"Jugador 2 conecto un golpe"<<endl;
+                    character->cancel("on_hit");
                 }else
                 {
                     //cout<<"No Colision!"<<endl;
@@ -137,6 +178,19 @@ int main( int argc, char* args[] )
             SDL_Delay(sleep_time);
         last_fame_ticks=SDL_GetTicks();
 
+        if(character->x<=0)
+        {
+            cout<<"Jugador 2 ha ganado"<<endl;
+            character->x=200;
+            character2->x=800;
+        }
+
+        if(character2->x>=1000)
+        {
+            cout<<"Jugador 1 ha ganado"<<endl;
+            character->x=200;
+            character2->x=800;
+        }
 
 
 //        drawRect(renderer,10,30,50,100,
